@@ -19,7 +19,7 @@ function run() {
 
   var options = {
     //host: 'localhost',
-    host: 'http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com',
+    host: 'ec2-3-132-212-11.us-east-2.compute.amazonaws.com',
     port: 80,
     path: `/purchase/${item}/${quantity}`,
     method: 'POST'
