@@ -13,8 +13,8 @@ router.get('/getcount/:item', (req, res) => {
   let total = inventoryController.getTotal(req.params.item);
 
   var options = {
-    //host: 'ec2-3-132-212-11.us-east-2.compute.amazonaws.com',
-    host: 'localhost',
+    //host: 'localhost',
+    host: 'ec2-3-132-212-11.us-east-2.compute.amazonaws.com',
     port: 80,
     path: '/',
     method: 'POST',

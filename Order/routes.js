@@ -26,14 +26,15 @@ router.post('/purchase/:item/:quantity', (req, res) => {
   //var url = `http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com:8081/getcount/${item}`;
 
   var options = {
-    host: 'localhost',
+    //host: 'localhost',
+    host: 'ec2-3-132-212-11.us-east-2.compute.amazonaws.com',
     port: 8081,
     path: `/getcount/${item}`,
     method: 'GET'
   }
 
   var data = "";
-  var httpReq = http.request(options, function(response) {
+  var httpReq = http.request(options, (response) => {
     response.setEncoding('utf8');
     response.on('data', function(chunk) {
       data += chunk;
