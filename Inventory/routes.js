@@ -1,5 +1,6 @@
 const express = require('express'),
       router = express.Router(),
+      logger = require('./controllers/logController'),
       querystring = require('querystring'),
       http = require('http'),
       inventoryController = require('./controllers/inventoryController');
@@ -11,7 +12,7 @@ router.get('/', (req, res) => {
 router.get('/getcount/:item', (req, res) => {
   let total = inventoryController.getTotal(req.params.item);
 
-
+  logger.log("SUCCESSFUL START");
   var data = querystring.stringify({
     item: req.params.item,
     amount: total
@@ -31,9 +32,11 @@ router.get('/getcount/:item', (req, res) => {
   var httpreq = http.request(options, function (response) {
     response.setEncoding('utf8');
     response.on('data', function(bodyData) {
+      logger.log("GOT HERE");
     });
 
     response.on('end', () => {
+      logger.log("GOT TO END?");
         res.send(total);
     });
   });
