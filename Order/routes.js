@@ -1,5 +1,6 @@
 const express = require('express'),
       router = express.Router(),
+      http = require('http'),
       logger = require('./controllers/logController'),
       menuController = require('./controllers/menuController'),
       menu = require('./views/menuView');
@@ -21,8 +22,29 @@ router.post('/purchase/:item/:quantity', (req, res) => {
   let quantity = req.params.quantity;
   let price = menuController.getPrice(item);
 
-  res.send('Successfully ordered ' + quantity + ' ' + item + '(s)');
-  logger.log(`ORDER ${item} ${price} ${quantity}`);
+  var url = `http://localhost:8081/getcount/${item}`;
+  http.get(url, (httpreq, httpres) => {
+    var body = [];
+
+    httpreq.on('data', (bodyData) => {
+    body.push(bodyData);
+    });
+
+    httpreq.on('end', () => {
+      body = Buffer.concat(body).toString();
+      var numStocked = Number(body);
+      var numRequested = Number(quantity);
+
+      if(numStocked >= numRequested) {
+        res.send('Successfully ordered ' + quantity + ' ' + item + '(s)');
+        logger.log(`ORDER ${item} ${price} ${quantity}`);
+      }
+      else {
+        res.send(`Sorry, we don\'t have ${quantity} ${item}(s)`);
+        logger.log(`FAILED_ORDER: ${item} ${price} ${quantity}`);
+      }
+    });
+  });
 });
 
 //Threw this route in here so that it didn't impact getLastRequestStatus
