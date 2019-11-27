@@ -46,7 +46,9 @@ router.post('/setcount/:item/:quantity', (req, res) => {
   res.send(`Successfully set total number of ${item}s to ${amount}`);
 });
 
-router.get('')
+router.get('/', (req, res) => {
+  res.send('Welcome to the inventory');
+});
 
 router.get('*', (req, res) => {
   res.send('404: Page not found.');
