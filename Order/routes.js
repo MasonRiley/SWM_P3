@@ -24,6 +24,8 @@ router.post('/purchase/:item/:quantity', (req, res) => {
 
   //var url = `http://localhost:65432/getcount/${item}`;
   var url = `http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com:65432/getcount/${item}`;
+  logger.log("URL = " + url);
+  logger.log("ITEM = " + item);
   http.get(url, (httpreq, httpres) => {
     var body = [];
 
@@ -44,9 +46,9 @@ router.post('/purchase/:item/:quantity', (req, res) => {
         res.send(`Sorry, we don\'t have ${quantity} ${item}(s)`);
         logger.log(`FAILED_ORDER: ${item} ${price} ${quantity}`);
       }
-    }).on('error', (err) => {
-      logger.log("ERROR:" + err.message);
     });
+  }).on('error', (err) => {
+    logger.log("ERROR:" + err.message);
   });
 });
 
