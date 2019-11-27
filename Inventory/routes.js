@@ -12,12 +12,13 @@ router.get('/', (req, res) => {
 router.get('/getcount/:item', (req, res) => {
   let total = inventoryController.getTotal(req.params.item);
 
-  logger.log("SUCCESSFUL START");
+  logger.log("-1: SUCCESSFUL START");
   var data = querystring.stringify({
     item: req.params.item,
     amount: total
   });
 
+  logger.log("0");
   var options = {
     host: 'http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com',
     port: 80,
