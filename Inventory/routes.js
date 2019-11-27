@@ -30,18 +30,21 @@ router.get('/getcount/:item', (req, res) => {
   };
 
   var httpreq = http.request(options, function (response) {
+    logger.log("1");
     response.setEncoding('utf8');
     response.on('data', function(bodyData) {
-      logger.log("GOT HERE");
+      logger.log("2");
     });
 
+    logger.log("3");
     response.on('end', () => {
-      logger.log("GOT TO END?");
+      logger.log("4");
         res.send(total);
     });
   });
-
+  logger.log("5");
   httpreq.write(data);
+  logger.log("6");
   httpreq.end();
 });
 
