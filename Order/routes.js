@@ -22,20 +22,24 @@ router.post('/purchase/:item/:quantity', (req, res) => {
   let quantity = req.params.quantity;
   let price = menuController.getPrice(item);
 
-  //var url = `http://localhost:65432/getcount/${item}`;
-  var url = `http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com:65432/getcount/${item}`;
-  logger.log("URL = " + url);
-  logger.log("ITEM = " + item);
-  http.get(url, (httpreq, httpres) => {
-    var body = [];
+  var url = `http://localhost:8081/getcount/${item}`;
+  //var url = `http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com:8081/getcount/${item}`;
 
-    httpreq.on('data', (bodyData) => {
-    body.push(bodyData);
+  var options = {
+    host: 'localhost',
+    port: 8081,
+    path: `/getcount/${item}`,
+    method: 'GET'
+  }
+
+  var data = "";
+  var httpReq = http.request(options, function(response) {
+    response.setEncoding('utf8');
+    response.on('data', function(chunk) {
+      data += chunk;
     });
-
-    httpreq.on('end', () => {
-      body = Buffer.concat(body).toString();
-      var numStocked = Number(body);
+    response.on('end', function() {
+      var numStocked = Number(data);
       var numRequested = Number(quantity);
 
       if(numStocked >= numRequested) {
@@ -47,9 +51,9 @@ router.post('/purchase/:item/:quantity', (req, res) => {
         logger.log(`FAILED_ORDER: ${item} ${price} ${quantity}`);
       }
     });
-  }).on('error', (err) => {
-    logger.log("ERROR:" + err.message);
   });
+  httpReq.write("");
+  httpReq.end();
 });
 
 //Threw this route in here so that it didn't impact getLastRequestStatus
