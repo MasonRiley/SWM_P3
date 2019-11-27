@@ -4,17 +4,21 @@ const express = require('express'),
       http = require('http'),
       inventoryController = require('./controllers/inventoryController');
 
+router.get('/', (req, res) => {
+  res.send('Welcome to the inventory');
+});
+
 router.get('/getcount/:item', (req, res) => {
   let total = inventoryController.getTotal(req.params.item);
 
 
   var data = querystring.stringify({
     item: req.params.item,
-    amount: total//inventoryController.getTotal(req.params.item)
+    amount: total
   });
 
   var options = {
-    host: 'localhost',
+    host: 'http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com',
     port: 80,
     path: '/',
     method: 'POST',
@@ -44,10 +48,6 @@ router.post('/setcount/:item/:quantity', (req, res) => {
 
   inventoryController.setTotal(item, amount);
   res.send(`Successfully set total number of ${item}s to ${amount}`);
-});
-
-router.get('/', (req, res) => {
-  res.send('Welcome to the inventory');
 });
 
 router.get('*', (req, res) => {
