@@ -23,7 +23,7 @@ router.post('/purchase/:item/:quantity', (req, res) => {
   let price = menuController.getPrice(item);
 
   //var url = `http://localhost:8081/getcount/${item}`;
-  var url = `ec2-3-132-212-11.us-east-2.compute.amazonaws.com:8081/getcount/${item}`;
+  var url = `http://ec2-3-132-212-11.us-east-2.compute.amazonaws.com:8081/getcount/${item}`;
   http.get(url, (httpreq, httpres) => {
     var body = [];
 
