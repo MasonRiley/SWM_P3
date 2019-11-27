@@ -36,7 +36,6 @@ router.get('/getcount/:item', (req, res) => {
 
   httpreq.write(data);
   httpreq.end();
-  //res.send(`There are ${total} ${item}(s)`);
 });
 
 router.post('/setcount/:item/:quantity', (req, res) => {
