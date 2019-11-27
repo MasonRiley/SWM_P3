@@ -44,6 +44,8 @@ router.post('/purchase/:item/:quantity', (req, res) => {
         res.send(`Sorry, we don\'t have ${quantity} ${item}(s)`);
         logger.log(`FAILED_ORDER: ${item} ${price} ${quantity}`);
       }
+    }).on('error', (err) => {
+      logger.log("ERROR:" + err.message);
     });
   });
 });
